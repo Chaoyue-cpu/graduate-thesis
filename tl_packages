@@ -1,0 +1,87 @@
+# TeX Live packages
+#
+# 注释 indirect 表示模板未直接使用，可能是被某个包依赖而未声明。
+
+# ----- 1. 编译基础中文文档需要 -----
+
+scheme-minimal
+
+collection-latex
+collection-xetex
+
+# collection-binextra
+latexmk
+
+# collection-langchinese
+ctex
+zhlineskip
+
+# collection-bibtexextra
+biber
+biblatex
+biblatex-gb7714-2015
+
+# ----- 2. 编译 templates/* 需要 -----
+
+# collection-latexextra
+datetime2
+datetime2-english # for datetime2 en-US
+enumitem
+fmtcount
+multirow
+mwe # for `example-image*` files
+titlesec
+xint # indirect
+xstring # indirect
+
+# collection-latexrecommended
+booktabs
+caption
+hologo
+listings
+mathtools # indirect
+metalogo
+pdflscape # indirect
+pdfpages
+setspace
+subfig
+underscore # indirect
+unicode-math
+
+# collection-plaingeneric
+dirtree
+poormanlog # indirect
+
+# collection-fontsextra
+asana-math
+fontawesome5 # indirect
+xits
+
+# collection-fontsrecommended
+tex-gyre
+
+# Not included in any collection
+float
+
+# ----- 3. 编译 handbook 和 bithesis.pdf 需要 -----
+
+# collection-latexextra
+adjustbox # indirect
+alphalph # indirect
+awesomebox
+cleveref
+csquotes # indirect
+csvsimple # indirect
+framed
+hypdoc
+markdown
+menukeys
+relsize
+was # for upgreek
+wrapfig
+
+# collection-fontsextra
+doulossil # for https://www.internationalphoneticassociation.org/content/ipa-fonts
+
+# Not included in any collection
+fancyvrb # indirect
