@@ -1,0 +1,24 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage[UTF8]{ctex}
+\input{_styles.tex}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+    \draw[thick, ->] (0,0) -- (0,2) node[left] {$z_g$};
+    \draw[thick, ->] (0,0) -- (2.2,0) node[below] {$x_g$};
+    \draw[very thick, blue!70] (-0.2,0.8) -- (2.4,0.8);
+    \node[ch3lab, blue!70!black] at (1.1,1.15) {全局参考地面平面 $\boldsymbol{\pi}_g$};
+
+    \draw[ch3arr] (2.9,1.35) -- node[ch3lab, above] {$\mathbf{T}_i$} (5.0,1.35);
+
+    \begin{scope}[shift={(6.1,0.2)}, rotate=12]
+        \draw[thick, ->] (0,0) -- (0,1.8) node[left] {$z_i$};
+        \draw[thick, ->] (0,0) -- (2.0,0) node[below] {$x_i$};
+        \draw[very thick, orange!80!black] (-0.1,0.55) -- (2.2,0.8);
+    \end{scope}
+    \node[ch3lab, orange!80!black] at (7.2,1.45) {局部观测平面 $\boldsymbol{\pi}_i$};
+
+    \draw[ch3darr, red!70!black] (7.0,1.0) -- +(0.0,0.95);
+    \node[ch3lab, red!70!black] at (7.55,1.55) {残差 $\mathbf{e}_{g,i}$};
+\end{tikzpicture}
+\end{document}

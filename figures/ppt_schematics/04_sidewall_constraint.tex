@@ -1,0 +1,28 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage[UTF8]{ctex}
+\input{_styles.tex}
+
+\begin{document}
+\begin{tikzpicture}[x=1.4cm,y=1cm]
+    \foreach \i/\y in {0/0.00,1/0.12,2/0.08,3/0.20,4/0.15} {
+        \node[ch3node, label={[ch3lab]below:$K_{\i+1}$}] (k\i) at (\i,\y) {};
+    }
+    \draw[thick] (k0) -- (k1) -- (k2) -- (k3) -- (k4);
+
+    \draw[very thick, blue!60] ($(k0)+(0.0,0.0)$) -- ++(0.45,0.65);
+    \draw[very thick, blue!60] ($(k1)+(0.0,0.0)$) -- ++(0.42,0.62);
+    \draw[very thick, blue!60] ($(k2)+(0.0,0.0)$) -- ++(0.40,0.56);
+    \draw[very thick, blue!60] ($(k3)+(0.0,0.0)$) -- ++(0.46,0.70);
+    \draw[very thick, blue!60] ($(k4)+(0.0,0.0)$) -- ++(0.58,0.38);
+
+    \draw[rounded corners=2pt, dashed, thick, gray] (-0.35,-0.45) rectangle (3.35,1.35);
+    \node[ch3lab, gray!70!black] at (1.45,1.65) {滑动窗口};
+
+    \draw[very thick, red!70!black,-{Latex[length=2mm]}] (k4) -- ++(0.48,0.62);
+    \node[ch3lab, red!70!black] at (4.75,1.0) {$\bar{\mathbf{n}}_i$};
+
+    \draw[thick] ($(k4)+(0.48,0.18)$) arc[start angle=20,end angle=52,radius=0.55];
+    \node[ch3lab] at (4.35,0.85) {$\phi_i$};
+    \node[ch3lab, blue!60!black] at (4.85,0.35) {$\mathbf{n}_i$};
+\end{tikzpicture}
+\end{document}

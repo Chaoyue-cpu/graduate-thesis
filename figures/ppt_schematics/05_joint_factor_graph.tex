@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage[UTF8]{ctex}
+\input{_styles.tex}
+
+\begin{document}
+\begin{tikzpicture}[x=1.5cm,y=1cm]
+    \foreach \i/\y in {0/0.0,1/0.18,2/-0.05,3/0.22,4/0.05} {
+        \node[ch3node, label={[ch3lab]below:$\mathbf{T}_{\i+1}$}] (n\i) at (\i,\y) {};
+    }
+    \draw[thick] (n0) -- (n1) -- (n2) -- (n3) -- (n4);
+    \node[ch3lab] at (2,-0.6) {里程计约束};
+
+    \draw[orange!80!black, very thick, dashed] (n1) to[bend left=30] node[ch3lab, above] {长度约束} (n3);
+    \draw[red!70!black, very thick, dashed] (n0) to[bend left=48] node[ch3lab, above] {角度约束} (n4);
+
+    \node[ch3aux, below=10mm of n1] (g1) {地面约束};
+    \node[ch3aux, below=10mm of n3] (w1) {侧壁约束};
+    \draw[ch3darr] (g1) -- (n1);
+    \draw[ch3darr] (w1) -- (n3);
+
+    \node[ch3solve, right=18mm of n4] (solver2) {统一图优化};
+    \draw[ch3arr] (n4) -- (solver2);
+    \draw[ch3arr] (g1.east) -| (solver2.south);
+    \draw[ch3arr] (w1.east) -| (solver2.south);
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,60 @@
+<mxfile host="app.diagrams.net" agent="Codex" version="24.7.17">
+  <diagram id="base-pose-graph" name="图3.3 基础位姿图结构示意图">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="anchor" value="锚点" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d9d9d9;strokeColor=#000000;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="125" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k1" value="T1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="180" y="128" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k1_label" value="T1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="167" y="156" width="50" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k2" value="T2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="290" y="106" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k2_label" value="T2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="277" y="134" width="50" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k3" value="T3" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="400" y="145" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k3_label" value="T3" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="387" y="173" width="50" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k4" value="T4" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="510" y="112" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k4_label" value="T4" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="497" y="140" width="50" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k5" value="T5" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="620" y="140" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="k5_label" value="T5" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="607" y="168" width="50" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e_anchor" value="首帧锚点约束" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;dashed=1;dashPattern=8 8;fontSize=13;" edge="1" parent="1" source="anchor" target="k1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" value="里程计边" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=13;" edge="1" parent="1" source="k1" target="k2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1" source="k2" target="k3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1" source="k3" target="k4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e45" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1" source="k4" target="k5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

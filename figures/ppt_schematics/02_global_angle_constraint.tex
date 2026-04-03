@@ -1,0 +1,19 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage[UTF8]{ctex}
+\input{_styles.tex}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+    \draw[thick] (0,0) -- (1.2,0.15) -- (2.3,0.15) -- (3.2,1.1) -- (4.1,2.1) -- (4.8,2.8);
+    \node[ch3sel, label={[ch3lab]below:$P_1$}] at (0,0) {};
+    \node[ch3sel, label={[ch3lab]below:$P_2$}] at (1.2,0.15) {};
+    \node[ch3sel, label={[ch3lab]right:$P_3$}] at (3.2,1.1) {};
+    \node[ch3sel, label={[ch3lab]right:$P_4$}] at (4.1,2.1) {};
+    \draw[very thick, blue!70!black,-{Latex[length=2.2mm]}] (0,0) -- (1.2,0.15);
+    \draw[very thick, red!70!black,-{Latex[length=2.2mm]}] (3.2,1.1) -- (4.1,2.1);
+    \draw[thick] (0.95,0.08) arc[start angle=7,end angle=48,radius=0.95];
+    \node[ch3lab] at (2.0,0.95) {$\theta^{\mathrm{exp}}$};
+    \node[ch3lab] at (2.6,-0.55) {第一段方向 $\mathbf{d}_{12}$};
+    \node[ch3lab] at (4.55,1.5) {第二段方向 $\mathbf{d}_{34}$};
+\end{tikzpicture}
+\end{document}

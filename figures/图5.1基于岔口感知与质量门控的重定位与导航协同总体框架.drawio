@@ -1,0 +1,123 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="图5.1 重定位与导航协同总体框架" id="yYzbOM5o4ATJ8LoIdOM4">
+    <mxGraphModel dx="2066" dy="1448" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-29" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8e6f8;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="连续定位结果&lt;br&gt;T_k, c_k" vertex="1">
+          <mxGeometry height="60" width="180" x="200.00313049316406" y="660.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-57" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="IubNVGiJ-Lam42tyZFZD-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-30" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8e6f8;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="当前帧点云&lt;br&gt;P_k" vertex="1">
+          <mxGeometry height="60" width="180" x="430.00313049316406" y="660.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8e6f8;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="先验地图与&lt;br&gt;巷道拓扑" vertex="1">
+          <mxGeometry height="60" width="180" x="660.003130493164" y="660.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fbe5d6;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="岔口感知与&lt;br&gt;结构判别" vertex="1">
+          <mxGeometry height="70" width="220" x="560.003130493164" y="840.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-34" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fbe5d6;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="局部定位质量评估&lt;br&gt;匹配误差/内点率/预测残差" vertex="1">
+          <mxGeometry height="70" width="220" x="290.00313049316406" y="840.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-60" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="IubNVGiJ-Lam42tyZFZD-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-35" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#e2f0d9;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="岔口窗口 + 质量门控&lt;br&gt;是否触发重定位?" vertex="1">
+          <mxGeometry height="120" width="220" x="420.00313049316406" y="980.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-36" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d9eaf7;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="维持连续定位与&lt;br&gt;常规导航" vertex="1">
+          <mxGeometry height="70" width="220" x="210.00313049316406" y="1160.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-37" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2f0d9;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="全局候选生成&lt;br&gt;BBS / FPFH-RANSAC / TEASER" vertex="1">
+          <mxGeometry height="70" width="220" x="700.003130493164" y="1005.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-38" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fbe5d6;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="局部精配准复核&lt;br&gt;候选排序与一致性检验" vertex="1">
+          <mxGeometry height="70" width="220" x="700.003130493164" y="1290.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-39" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fbe5d6;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="时延补偿与&lt;br&gt;位姿重置" vertex="1">
+          <mxGeometry height="70" width="220" x="700.003130493164" y="1420.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f4cccc;strokeColor=#666666;strokeWidth=1.5;fontSize=15;align=center;verticalAlign=middle;" value="定位-重定位-导航协同状态机" vertex="1">
+          <mxGeometry height="70" width="320" x="420.00313049316406" y="1580.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-41" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;" value="否" vertex="1">
+          <mxGeometry height="20" width="40" x="360.00313049316406" y="1020.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-42" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;" value="是" vertex="1">
+          <mxGeometry height="20" width="40" x="640.003130493164" y="1020.003130493164" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-44" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-33">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="520.003130493164" y="790.003130493164" />
+              <mxPoint x="670.003130493164" y="790.003130493164" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-45" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-34">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290.00313049316406" y="790.003130493164" />
+              <mxPoint x="400.00313049316406" y="790.003130493164" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-46" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-33">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="750" y="790" />
+              <mxPoint x="670" y="790" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-47" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-48" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-49" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;entryX=0.534;entryY=0.061;entryDx=0;entryDy=0;entryPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="1040" />
+            </Array>
+            <mxPoint x="420" y="1040" as="sourcePoint" />
+            <mxPoint x="320.003130493164" y="1160.0031304931642" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-52" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;exitX=0.838;exitY=1.034;exitDx=0;exitDy=0;exitPerimeter=0;" target="IubNVGiJ-Lam42tyZFZD-37">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="811" y="920" />
+              <mxPoint x="811" y="920" />
+            </Array>
+            <mxPoint x="750" y="810.003130493164" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-53" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-54" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-55" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-40">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="1610" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IubNVGiJ-Lam42tyZFZD-56" edge="1" parent="1" source="IubNVGiJ-Lam42tyZFZD-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#4d4d4d;endArrow=block;endFill=1;" target="IubNVGiJ-Lam42tyZFZD-40">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="1615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

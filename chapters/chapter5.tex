@@ -1,33 +1,330 @@
-\chapter{矿井巷道的定位与导航}
+\chapter{基于岔口感知与质量门控的重定位与导航协同方法}
 
-\section{全局定位方法}
+\section{引言}
 
-\subsection{扫描匹配定位}
+第四章针对矿井巷道场景提出了基于先验体素约束与轴向分解融合的连续定位方法，该方法能够在大多数正常工况下维持稳定的位姿估计。然而，矿井巷道属于典型的长走廊式环境，沿巷道主方向的结构重复性强、几何退化明显，局部配准结果容易受到初值偏差、动态干扰、局部遮挡以及分岔附近结构突变的影响。当局部定位质量持续下降时，若仍仅依靠连续跟踪链路进行状态传播，误差可能在短时间内累积并进一步放大，进而影响岔口通行与路径跟踪的安全性。
 
-\subsection{地图匹配定位}
+现有工程实现通常将全局重定位作为独立功能模块存在，仅在人工调用或上层系统显式请求时启动。该方式虽然避免了误触发带来的错误跳变，但同时也使重定位与实际行驶场景之间缺少紧密耦合，特别是在矿井巷道这类以岔口、交汇段和巷道拓扑转换为主要判别信息的场景中，无法充分利用高判别度结构提升重定位成功率。相比于在任何时刻仅依据单帧匹配得分直接触发全局搜索，岔口区域同时具备更丰富的横向结构信息、更明确的拓扑变化以及更强的环境区分能力，因此更适合作为重定位触发与结果验收的关键窗口。
 
-\subsection{利用几何约束改进定位}
+基于上述认识，本文在连续定位框架之上进一步提出一种基于岔口感知与质量门控的重定位与导航协同方法。该方法并不将“配准质量下降”直接等同于“立即重定位”，而是首先检测车辆是否进入具有较高结构判别度的岔口区域，再结合连续定位质量指标构建重定位触发条件；当触发条件满足时，调用全局定位模块生成多组候选位姿，并通过局部精配准、拓扑一致性与时间延迟补偿对候选结果进行复核，最终将可信重定位结果反馈给定位器与导航器，实现从“异常检测”到“定位恢复”再到“导航协同”的完整闭环。
 
-\section{连续定位与跟踪}
+本章的核心贡献在于：其一，建立面向矿井岔口场景的重定位触发思想，将岔口从普通地形结构提升为重定位触发窗口；其二，提出局部定位质量门控机制，使重定位触发同时受环境判别度与定位不确定性共同约束；其三，设计多候选复核与状态机切换策略，使重定位结果在进入主定位链路前经过局部验证与拓扑检查；其四，将重定位过程与导航策略协同统一，使车辆在定位可疑和定位恢复期间具有可解释的速度约束与路径选择逻辑。
 
-\subsection{卡尔曼滤波在位姿估计中的应用}
+\section{问题分析与总体框架}
 
-\subsection{多假设跟踪}
+\subsection{矿井巷道中的定位退化特性}
 
-\subsection{位姿不确定性估计}
+矿井巷道环境在几何形态上具有显著的非均匀可观测性。沿巷道主方向，点云观测往往表现为长距离、低曲率、重复截面的结构分布，局部配准在该方向上的约束相对薄弱；而在横断面方向，侧壁、顶板和底板所形成的边界结构较为稳定，对位置和偏航角估计具有更强约束作用。正是这种“轴向弱约束、非轴向强约束”的差异，使得连续定位系统在进入长直段、开阔段或重复结构段时，更容易出现匹配得分恶化、初值偏差扩大以及局部极值吸附等现象。
 
-\section{基于几何约束的定位鲁棒性增强}
+另一方面，矿井导航任务不仅要求位姿估计在均方意义上精度较高，还要求其在关键拓扑位置具备足够稳定性。车辆进入岔口时，左支巷、右支巷以及主巷之间的拓扑关系将直接影响导航决策与路径选择。如果定位误差在岔口前后迅速增大，则系统可能出现误判所属巷道、错误选择支路或者在地图中跳变到相邻通道的情况。因此，重定位机制不应仅被视为“定位失败后的补救手段”，而应作为保障岔口决策正确性的主动恢复机制。
 
-\subsection{约束对定位稳定性的影响}
+\subsection{岔口场景的结构判别优势}
 
-\subsection{异常情况下的定位纠正}
+与长直巷道相比，岔口区域具有更高的几何判别度与拓扑辨识度，主要体现在以下三个方面。
 
-\subsection{定位失败的恢复机制}
+首先，岔口附近横向开口数量增多，侧向空间分布由单一双壁约束转变为多峰或非对称结构，显著提高了点云在横向方向上的可区分性。其次，岔口处局部地图不再仅由平行巷壁和顶底板构成，而是出现巷道中心线转向、侧支巷开口以及轮廓截面突变等现象，这类结构特征在全局地图中具有更强的唯一性。最后，岔口本身具有明确的拓扑含义，其位置不仅决定了车辆当前所处巷段，也决定了后续导航行为，因此岔口不仅是几何特征增强位置，也是语义上更重要的重定位节点。
 
-\section{定位精度评估}
+基于这一认识，本文不在整个行驶过程中无差别地执行自动重定位，而是构造“岔口窗口”概念，即仅在检测到车辆进入或接近岔口的时间段内开放重定位触发权限。这样既能够减少在长直重复结构中误触发全局重定位的概率，也能够使全局搜索更可能在高判别度区域完成，从而提高全局候选位姿的正确率。
 
-\subsection{定位精度指标}
+\subsection{总体协同框架}
 
-\subsection{与传统方法的对比实验}
+本文提出的重定位与导航协同总体框架如图~\ref{fig:ch5_reloc_framework} 所示。该框架以前一章得到的连续定位结果为基础，将岔口感知、质量评估、全局候选生成、局部复核、时延补偿与导航状态机串联为完整流程。
+
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth][c]{%
+    \begin{tikzpicture}[
+        x=0.95cm,y=0.95cm,
+        io/.style={draw, rounded corners=3pt, thick, fill=blue!6, minimum width=2.9cm, minimum height=1.15cm, align=center, font=\small},
+        block/.style={draw, rounded corners=4pt, thick, fill=orange!10, minimum width=3.45cm, minimum height=1.2cm, align=center, font=\small},
+        branch/.style={draw, rounded corners=4pt, thick, fill=green!10, minimum width=3.35cm, minimum height=1.2cm, align=center, font=\small},
+        fusion/.style={draw, rounded corners=4pt, thick, fill=red!8, minimum width=3.8cm, minimum height=1.2cm, align=center, font=\small},
+        line/.style={-{Latex[length=2mm]}, thick},
+        note/.style={font=\small}
+    ]
+        \node[io] (scan) at (0.0,5.6) {当前帧点云\\$\mathcal{P}_k$};
+        \node[io] (local) at (4.6,5.6) {连续定位结果\\$\hat{\mathbf{T}}_k,\ c_k^{\mathrm{loc}}$};
+        \node[io] (map) at (9.2,5.6) {先验地图与\\巷道拓扑};
+        \node[io] (nav) at (13.8,5.6) {导航任务与\\目标路径};
+
+        \node[block] (branchdet) at (0.8,2.7) {岔口感知与\\结构判别};
+        \node[block, minimum width=3.8cm] (quality) at (5.0,2.7) {局部定位质量评估\\匹配误差/内点率/预测残差};
+        \node[branch, minimum width=3.8cm] (trigger) at (9.2,2.7) {岔口窗口与质量门控\\重定位触发判定};
+        \node[branch, minimum width=4.1cm] (global) at (13.4,2.7) {全局候选生成\\BBS / FPFH-RANSAC / TEASER};
+
+        \node[block, minimum width=4.1cm] (verify) at (4.0,-0.3) {局部精配准复核\\候选排序与一致性检验};
+        \node[block, minimum width=3.6cm] (delay) at (10.0,-0.3) {时延补偿与\\位姿重置};
+        \node[fusion, minimum width=4.6cm] (state) at (7.0,-3.2) {定位--重定位--导航协同状态机};
+
+        \draw[line] (scan.south) -- ++(0,-1.0) -| (branchdet.north);
+        \draw[line] (scan.south) -- ++(0,-0.5) -| (quality.north);
+        \draw[line] (local) -- (quality);
+        \draw[line] (map.south) -- ++(0,-1.3) -| (branchdet.east);
+        \draw[line] (map) -- (global);
+        \draw[line] (nav) -- (global);
+        \draw[line] (branchdet.north) -- ++(0,0.9) -| (trigger.north);
+        \draw[line] (quality.east) -- (trigger.west);
+        \draw[line] (trigger) -- (global);
+        \draw[line] (global.south) -- ++(0,-0.8) -| (verify.east);
+        \draw[line] (scan.west) -- ++(-1.0,0) |- (verify.west);
+        \draw[line] (verify) -- (delay);
+        \draw[line] (delay.south) -- ++(0,-0.9) -| (state.east);
+        \draw[line] (quality.west) -- ++(-1.2,0) |- (state.west);
+        \draw[line] (nav.east) -- ++(1.0,0) |- (state.east);
+
+        \node[note] at (3.0,-4.15) {定位恢复链路};
+        \node[note] at (10.8,-4.15) {导航协同链路};
+    \end{tikzpicture}
+    }
+    \caption{基于岔口感知与质量门控的重定位与导航协同总体框架}
+    \label{fig:ch5_reloc_framework}
+\end{figure}
+
+在该框架中，连续定位模块持续输出当前位姿估计及其局部质量信息；岔口感知模块依据当前帧点云与先验地图提取岔口结构判别量；触发判定模块仅在车辆进入岔口窗口且局部定位质量持续下降时允许启动全局重定位；全局定位模块生成若干候选位姿后，由局部精配准复核模块对每个候选执行再次匹配、拓扑一致性检验和排序；最终，时延补偿模块将通过验证的候选位姿变换到当前时刻，并交由状态机完成定位器重置与导航模式切换。
+
+为便于描述，本章所使用的主要符号如表~\ref{tab:ch5_symbols} 所示。
+
+\begin{table}[htbp]
+    \centering
+    \caption{本章重定位与导航协同方法中的主要符号说明}
+    \label{tab:ch5_symbols}
+    \small
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{p{3.0cm}p{3.4cm}p{6.4cm}}
+        \toprule
+        符号 & 物理意义 & 说明 \\
+        \midrule
+        $\hat{\mathbf{T}}_k$ & 时刻 $k$ 的连续定位位姿估计 & 由第四章提出的连续定位链路输出。 \\
+        $c_k^{\mathrm{loc}}$ & 局部定位综合置信度 & 由匹配误差、内点率、收敛性和预测残差共同映射得到。 \\
+        $s_k^{\mathrm{br}}$ & 岔口显著性得分 & 反映当前观测是否具有岔口结构判别特征。 \\
+        $\mathcal{W}_k^{\mathrm{br}}$ & 岔口窗口指示量 & 指示车辆当前是否处于允许触发重定位的岔口时空范围内。 \\
+        $\mathcal{G}_k=\{\mathbf{T}_{k,i}^{g}\}$ & 全局候选位姿集合 & 全局定位模块返回的若干粗位姿候选。 \\
+        $\mathbf{T}_{k,i}^{r}$ & 第 $i$ 个候选的局部复核结果 & 使用局部精配准对全局候选进行再次优化后的位姿。 \\
+        $J_{k,i}$ & 第 $i$ 个候选的综合代价 & 融合局部复核误差、内点率和拓扑一致性后的评价量。 \\
+        $\Delta \mathbf{T}_{t_q \rightarrow k}$ & 查询时刻到当前时刻的增量位姿 & 用于补偿全局查询期间车辆继续运动所造成的时延误差。 \\
+        $\mathbf{T}_k^{\mathrm{reset}}$ & 最终重置位姿 & 经候选验证与时延补偿后写回定位器的位姿。 \\
+        $\mathcal{S}_k$ & 系统状态 & 取值包括正常跟踪、可疑监视、重定位执行与恢复确认。 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{岔口感知驱动的重定位触发机制}
+
+\subsection{岔口事件建模}
+
+在矿井巷道场景中，岔口可视为一种局部结构从“单通道”向“多通道”转变的事件。设经过预处理后的当前帧点云为 $\mathcal{P}_k$，在车辆坐标系下统计其前向扇区、左侧扇区和右侧扇区内的开口特征、侧向边缘密度以及轮廓多峰程度，可构造岔口显著性得分：
+\begin{equation}
+s_k^{\mathrm{br}}
+=
+\lambda_1 \rho_k^{\mathrm{open}}
++ \lambda_2 \rho_k^{\mathrm{edge}}
++ \lambda_3 \rho_k^{\mathrm{topo}},
+\qquad
+\lambda_1+\lambda_2+\lambda_3=1
+\end{equation}
+
+其中，$\rho_k^{\mathrm{open}}$ 表示侧向开口比例，$\rho_k^{\mathrm{edge}}$ 表示侧向轮廓边缘增强程度，$\rho_k^{\mathrm{topo}}$ 表示当前观测与先验拓扑中岔口模板的一致程度。当前系统若已具备中轴线、地图轮廓或先验体素图层，则可直接利用这些先验增强 $\rho_k^{\mathrm{topo}}$ 的计算；若先验拓扑信息较弱，也可仅依据点云在横断面方向上的多峰结构变化构造近似岔口检测器。
+
+当 $s_k^{\mathrm{br}}$ 超过阈值 $\tau_{\mathrm{br}}$ 且持续若干帧时，系统判定车辆进入岔口附近区域。为了避免由单帧噪声或临时遮挡导致的误检，本文进一步定义岔口窗口：
+\begin{equation}
+\mathcal{W}_k^{\mathrm{br}}=
+\begin{cases}
+1, & \exists\, j\in[k-N_b,\ k+N_b],\ s_j^{\mathrm{br}} \ge \tau_{\mathrm{br}} \\
+0, & \text{otherwise}
+\end{cases}
+\end{equation}
+
+式中，$N_b$ 表示岔口窗口宽度，可按帧数定义，也可按车辆沿轨迹前后距离定义。引入岔口窗口的目的在于将“岔口检测瞬间”扩展为一段连续的可操作区间，使得全局重定位的调用、候选验证与导航切换都能够在同一结构判别阶段内完成。
+
+\subsection{局部定位质量评估}
+
+仅有岔口感知仍不足以支撑自动重定位，因为车辆可能在岔口附近保持良好定位，此时盲目触发全局重定位反而会引入额外风险。因此，本文进一步构造局部定位质量评估量，对连续定位链路的健康状态进行持续监测。设当前帧地图配准误差为 $e_k$，内点率为 $\eta_k$，预测残差范数为 $\delta_k$，收敛指示量为 $h_k \in \{0,1\}$，则局部置信度可写为：
+\begin{equation}
+c_k^{\mathrm{loc}}
+=
+w_1 \phi(\eta_k)
++ w_2 \psi(e_k)
++ w_3 \chi(\delta_k)
++ w_4 h_k,
+\qquad
+\sum_{i=1}^{4} w_i = 1
+\end{equation}
+
+其中，$\phi(\cdot)$、$\psi(\cdot)$ 与 $\chi(\cdot)$ 分别表示将内点率、匹配误差与预测残差归一化映射到 $[0,1]$ 区间的单调函数。当内点率较高、匹配误差较低且预测与观测一致时，$c_k^{\mathrm{loc}}$ 较大；反之，当系统出现持续退化、局部极值吸附或预测漂移累积时，$c_k^{\mathrm{loc}}$ 将显著下降。
+
+表~\ref{tab:ch5_quality_metrics} 给出了本文采用的质量评估指标及其作用。需要指出的是，这些量本质上并非相互独立：匹配误差反映当前观测与地图的一致程度，内点率反映有效约束比例，而预测残差则反映当前观测结果与系统先验之间的偏离程度。三者组合使用，可以比仅依赖单一配准得分更稳健地描述定位健康状态。
+
+\begin{table}[htbp]
+    \centering
+    \caption{重定位触发中的局部质量评估指标及其作用}
+    \label{tab:ch5_quality_metrics}
+    \small
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{p{3.0cm}p{3.2cm}p{6.6cm}}
+        \toprule
+        指标 & 来源 & 作用 \\
+        \midrule
+        匹配误差 $e_k$ & 帧到地图或帧间配准结果 & 反映当前配准结果与参考地图/参考帧的一致程度，过大说明当前观测可信度下降。 \\
+        内点率 $\eta_k$ & 配准后的最近邻一致性统计 & 反映有效约束点在全部有效点中的比例，过低说明观测支持不足。 \\
+        收敛指示 $h_k$ & 配准器输出 & 反映优化是否达到有效收敛状态，可用于快速剔除明显失败的配准结果。 \\
+        预测残差 $\delta_k$ & 预测位姿与观测位姿差异 & 反映系统先验与当前观测之间的一致程度，可用于发现连续漂移与跳变。 \\
+        连续异常帧数 $n_k^{\mathrm{bad}}$ & 上述指标时间累积 & 用于抑制瞬时波动带来的误触发，只对持续退化做出响应。 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{触发判据与窗口约束}
+
+结合岔口窗口与局部质量评估结果，本文将重定位触发条件定义为：
+\begin{equation}
+z_k=
+\begin{cases}
+1, & \mathcal{W}_k^{\mathrm{br}}=1,\ c_k^{\mathrm{loc}} < \tau_{\mathrm{loc}},\ n_k^{\mathrm{bad}}\ge M \\
+0, & \text{otherwise}
+\end{cases}
+\end{equation}
+
+式中，$\tau_{\mathrm{loc}}$ 为局部定位置信阈值，$M$ 为连续异常帧数门限。上述判据体现出两个核心约束：其一，只有在结构判别度较高的岔口窗口内才允许触发重定位；其二，只有当局部质量连续恶化而非瞬时波动时才执行全局搜索。该设计避免了两类常见问题：一是在长直重复巷道中因单帧配准异常而频繁触发全局搜索，二是在定位仍然健康时无意义地调用重定位并造成潜在错误重置。
+
+图~\ref{fig:ch5_trigger_state} 给出了岔口触发、候选复核与状态切换的状态机示意。与传统“质量差即立即重定位”的策略相比，本文将可疑检测、重定位执行和结果验收拆解为多个阶段，从而为导航器提供更加平滑和可解释的行为切换基础。
+
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth][c]{%
+    \begin{tikzpicture}[
+        x=1.1cm,y=1.05cm,
+        state/.style={draw, rounded corners=7pt, thick, minimum width=3.2cm, minimum height=1.15cm, align=center, font=\small, fill=blue!7},
+        action/.style={draw, rounded corners=5pt, thick, minimum width=3.5cm, minimum height=1.15cm, align=center, font=\small, fill=orange!10},
+        decision/.style={draw, rounded corners=5pt, thick, minimum width=3.35cm, minimum height=1.15cm, align=center, font=\small, fill=green!10},
+        line/.style={-{Latex[length=2mm]}, thick},
+        note/.style={font=\small}
+    ]
+        \node[state] (normal) at (0,0) {正常跟踪\\$\mathcal{S}_k=\mathrm{Normal}$};
+        \node[decision] (suspect) at (4.8,0) {岔口窗口内\\质量持续下降};
+        \node[action] (relocal) at (9.6,0) {执行全局重定位\\生成候选集};
+        \node[action] (verify) at (9.6,-3.0) {局部复核与\\拓扑一致性验证};
+        \node[state] (recover) at (4.8,-3.0) {恢复确认\\写回定位器};
+        \node[state] (fallback) at (0,-3.0) {保守导航\\减速/维持主巷};
+
+        \draw[line] (normal) -- node[above, note] {$\mathcal{W}_k^{\mathrm{br}}=1$ 且 $c_k^{\mathrm{loc}}<\tau_{\mathrm{loc}}$} (suspect);
+        \draw[line] (suspect) -- node[above, note] {$n_k^{\mathrm{bad}}\ge M$} (relocal);
+        \draw[line] (relocal) -- node[right, note] {返回候选} (verify);
+        \draw[line] (verify) -- node[below, note] {通过验收} (recover);
+        \draw[line] (recover) -- node[left, note] {状态稳定} (fallback);
+        \draw[line] (fallback) -- node[below, note] {定位恢复后退出保守模式} (normal);
+        \draw[line] (verify.west) -- ++(-1.3,0) |- node[left, note] {复核失败} (fallback.east);
+        \draw[line] (suspect.south) -- ++(0,-1.0) -| node[pos=0.2,right, note] {岔口窗口结束或质量恢复} (normal.south);
+    \end{tikzpicture}
+    }
+    \caption{岔口触发重定位与导航协同状态机示意图}
+    \label{fig:ch5_trigger_state}
+\end{figure}
+
+\section{全局候选生成与局部复核}
+
+\subsection{全局候选生成策略}
+
+当触发条件满足后，系统启动全局定位模块在先验地图中搜索可能的绝对位姿。结合工程实现与已有研究，本文将全局候选生成方法归纳为三类：二维栅格分支定界搜索、基于 FPFH 特征的 RANSAC 粗配准，以及基于 FPFH 特征与 TEASER 的鲁棒粗配准\cite{Hess2016LoopClosure,Rusu2009FPFH,Yang2021TEASER}。其中，二维栅格分支定界方法适合快速利用矿井巷道在高度切片上的结构特征进行粗定位；FPFH-RANSAC 方法可在三维点云中构造特征对应并估计刚体位姿；FPFH-TEASER 方法进一步增强了外点场景下的鲁棒性。
+
+考虑到矿井巷道具有明显的平面化与管廊化特征，二维栅格搜索在长直巷道和结构规则区域往往具有较高效率，而在分岔附近或局部三维结构更加丰富的区域，基于特征的三维全局配准方法能够提供更具判别力的候选结果。本文并不强制限定单一全局候选生成器，而是将上述方法统一视为候选生成前端，其输出形式均记为：
+\begin{equation}
+\mathcal{G}_k=
+\left\{
+\mathbf{T}_{k,1}^{g},
+\mathbf{T}_{k,2}^{g},
+\cdots,
+\mathbf{T}_{k,N_g}^{g}
+\right\}
+\end{equation}
+
+其中，$N_g$ 为返回候选数量。与仅返回单个最佳解相比，多候选输出更符合矿井岔口场景的需求，因为在相似走廊和相邻支巷并存时，多个近似候选往往同时存在。此时若直接将粗配准的最优候选写回定位器，系统容易因粗搜索误判而发生错误跳变；因此，必须在全局候选之后增加局部复核环节。
+
+表~\ref{tab:ch5_global_methods} 对三类候选生成方法的特点进行了概括比较。
+
+\begin{table}[htbp]
+    \centering
+    \caption{重定位候选生成方法的特点比较}
+    \label{tab:ch5_global_methods}
+    \small
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{p{3.2cm}p{2.0cm}p{4.0cm}p{4.3cm}}
+        \toprule
+        方法 & 观测维度 & 优势 & 局限性 \\
+        \midrule
+        二维栅格分支定界搜索 & 2D 高度切片 & 搜索速度快，适合利用巷道横断面与平面结构进行粗定位 & 对切片高度范围较敏感，难以充分利用三维细节结构。 \\
+        FPFH + RANSAC & 3D 特征点云 & 可直接在三维空间估计粗位姿，对局部姿态差异更敏感 & 在重复结构和高外点比例场景下容易产生歧义候选。 \\
+        FPFH + TEASER & 3D 特征点云 & 对外点更鲁棒，适合岔口和复杂结构区域的候选估计 & 特征提取和候选求解代价较高，不宜高频调用。 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{候选复核与最优解选择}
+
+对每个全局候选位姿 $\mathbf{T}_{k,i}^{g}$，系统进一步执行局部精配准，以得到经过局部地图一致性优化后的位姿 $\mathbf{T}_{k,i}^{r}$ 及其复核指标。设精配准后的匹配误差为 $e_{k,i}^{r}$，内点率为 $\eta_{k,i}^{r}$，与拓扑约束的偏离量为 $d_{k,i}^{\mathrm{topo}}$，则第 $i$ 个候选的综合代价定义为：
+\begin{equation}
+J_{k,i}
+=
+\alpha e_{k,i}^{r}
++ \beta \left(1-\eta_{k,i}^{r}\right)
++ \gamma d_{k,i}^{\mathrm{topo}},
+\qquad
+\alpha+\beta+\gamma=1
+\end{equation}
+
+其中，$d_{k,i}^{\mathrm{topo}}$ 用于衡量候选位姿与岔口拓扑关系的符合程度，例如候选所在巷段是否与当前岔口检测结果一致、候选所对应的支巷方向是否与导航目标相符以及候选投影到巷道中轴后的拓扑位置是否连续。将所有候选按 $J_{k,i}$ 从小到大排序，最优候选索引为：
+\begin{equation}
+i^\star = \arg\min_i J_{k,i}
+\end{equation}
+
+但最优候选并不必然可被接受。为避免多个相近候选之间缺乏足够判别度时的误切换，本文增加候选验收条件：
+\begin{equation}
+\begin{aligned}
+J_{k,i^\star} &< \tau_J \\
+J_{k,(2)} - J_{k,(1)} &> \Delta_J \\
+\left\| \mathrm{Log}\left( \left(\hat{\mathbf{T}}_k\right)^{-1}\mathbf{T}_{k,i^\star}^{r} \right) \right\| &< \tau_{\mathrm{jump}}
+\end{aligned}
+\end{equation}
+
+式中，$\tau_J$ 为候选总体质量阈值，$\Delta_J$ 为最优候选与次优候选之间的最小区分裕量，$\tau_{\mathrm{jump}}$ 为允许的位姿跳变上限。只有当最优候选本身足够好、与次优候选之间存在足够优势且与当前先验状态不发生不合理突变时，该候选才被判定为可接受重定位结果。
+
+\subsection{时延补偿与位姿重置}
+
+全局重定位通常需要一定计算时间，在候选搜索和局部复核进行期间，车辆仍然会继续运动。如果直接将查询时刻的候选位姿写回当前定位器，则会引入由服务延迟带来的时间失配误差。为此，本文采用增量补偿思想，将查询时刻到当前时刻之间的局部运动估计记为 $\Delta \mathbf{T}_{t_q \rightarrow k}$，则最终重置位姿定义为：
+\begin{equation}
+\mathbf{T}_k^{\mathrm{reset}}
+=
+\mathbf{T}_{t_q,i^\star}^{r}
+\Delta \mathbf{T}_{t_q \rightarrow k}
+\end{equation}
+
+其中，$\mathbf{T}_{t_q,i^\star}^{r}$ 表示在查询时刻 $t_q$ 通过局部复核后的最优全局候选位姿。增量补偿项可由重定位期间的帧间配准、短时里程计或惯性传播结果近似估计。通过该方式，重定位结果能够从“粗搜索完成时刻”对齐到“真正写回定位器时刻”，从而减小因查询时延造成的位姿落后问题。
+
+完成时延补偿后，系统并不立即丢弃原有定位链路，而是将 $\mathbf{T}_k^{\mathrm{reset}}$ 作为新的状态初值写回定位器，并在若干后续帧中持续监测局部质量是否恢复。如果恢复后的若干帧中匹配误差重新恶化，则说明当前重定位结果仍不可靠，此时应退回保守导航状态并等待下一次岔口窗口或人工干预。
+
+\section{重定位与导航协同状态机}
+
+\subsection{状态定义与切换逻辑}
+
+为将定位恢复过程与导航行为统一管理，本文将系统运行状态划分为正常跟踪、可疑监视、重定位执行与恢复确认四类。正常跟踪状态下，系统仅运行连续定位链路与常规导航控制；当车辆进入岔口窗口且局部定位质量下降时，系统转入可疑监视状态，对异常帧持续计数并降低导航激进行为；若连续异常满足重定位触发条件，则进入重定位执行状态；当候选通过局部复核与时延补偿并成功写回定位器后，系统进入恢复确认状态，在后续数帧内继续监测定位质量，确认稳定后再返回正常跟踪状态。
+
+这一状态机设计体现了“先监视、后触发、再验收、最后放行”的思想。与立即自动重置相比，状态机能够显式表达定位系统当前的可信程度，并为导航器提供统一的行为约束接口。特别是在矿井岔口区域，这种层次化状态表达可以显著降低因定位跳变导致的错误转向风险。
+
+\subsection{导航约束与安全策略}
+
+在正常跟踪状态下，导航器按照既定全局路径和局部避障策略进行路径跟踪；在可疑监视状态下，导航器应降低速度上限、限制大幅横向机动，并优先维持主巷中心通行，避免在定位不可靠阶段做出激烈支路切换；在重定位执行状态下，导航器可采用“保守通行”策略，即在确保安全的前提下减速前进或短时保持低速匀速，并暂缓执行新的岔口分支决策；在恢复确认状态下，导航器结合新位姿与目标路径重新评估当前所属巷段，只有当定位质量恢复稳定且拓扑判断一致时，才允许恢复正常的分支选择与速度规划。
+
+从导航角度看，本文方法的关键并非“重定位成功后再做导航”，而是“在重定位前、中、后都让导航具有可解释的安全模式”。定位器与导航器通过共享系统状态 $\mathcal{S}_k$，使车辆在定位不确定期间具备连续、平滑且安全的行为约束。
+
+\subsection{工程实现要点}
+
+从工程实现层面，本文方法可直接构建在已有定位系统之上。连续定位模块持续输出匹配误差、内点率、收敛状态和预测残差等质量量；岔口感知模块则可依托巷道轮廓先验、中轴线信息、先验体素层或局部点云开口特征进行实现；全局定位模块调用现有的粗配准接口返回多候选位姿；局部复核模块对每个候选再次执行帧到地图精配准并完成代价计算与排序；时延补偿模块利用重定位期间累计的帧间增量将候选位姿更新到当前时刻。
+
+在具体部署时，需要重点关注三个问题。第一，岔口显著性阈值与局部质量阈值不宜设置过低，否则容易在普通侧壁起伏或局部缺失场景中产生误触发。第二，多候选复核数量应与计算资源相匹配，若候选数过多，会增加重定位时延；若候选数过少，则可能无法覆盖真实位姿。第三，状态机切换应保留必要的时间滞回与帧数确认，以避免正常状态与可疑状态之间频繁振荡。
+
+\section{本章小结}
+
+本章面向矿井巷道分岔场景，提出了一种基于岔口感知与质量门控的重定位与导航协同方法。该方法以第四章连续定位结果为基础，不再将低匹配得分简单等同于立即重定位，而是首先利用岔口结构的高判别度构造重定位触发窗口，再结合局部定位质量评价量完成触发判定；在触发后，通过全局多候选生成、局部精配准复核、拓扑一致性检验和时延补偿，得到可信的重置位姿；最终，通过与导航状态机协同，使车辆在定位可疑、重定位执行和恢复确认阶段均具备明确的安全策略。
+
+与仅依赖人工调用的重定位方式相比，本文方法能够在矿井岔口这种高信息量结构处更主动地恢复定位，同时通过多重门控与候选验收机制抑制误重定位风险。下一章将围绕该方法开展实验验证，从定位精度、鲁棒性、岔口恢复能力以及与现有方法的对比等方面对所提出方法进行系统评估。
 
 \newpage

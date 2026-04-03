@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#12161b"/>
+      <stop offset="100%" stop-color="#252a30"/>
+    </linearGradient>
+    <linearGradient id="floor4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6f757a"/>
+      <stop offset="50%" stop-color="#888e93"/>
+      <stop offset="100%" stop-color="#70767b"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 34px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #f3f5f7; }
+      .sub { font: 500 18px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #b9c0c7; }
+      .label { font: 600 20px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #eef2f5; }
+      .small { font: 500 16px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #d8dde2; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="520" fill="url(#bg4)"/>
+  <rect x="36" y="30" width="370" height="70" rx="18" fill="#0d1116" fill-opacity="0.62" stroke="#3a444d"/>
+  <text x="62" y="72" class="title">侧壁方向辅助约束</text>
+  <text x="62" y="97" class="sub">滑动窗口参考方向 + 当前观测</text>
+
+  <polyline points="120,270 1210,270"
+            fill="none" stroke="#0b0e12" stroke-opacity="0.30" stroke-width="178" stroke-linejoin="round"/>
+  <polyline points="120,270 1210,270"
+            fill="none" stroke="#41484f" stroke-width="156" stroke-linejoin="round"/>
+  <polyline points="120,270 1210,270"
+            fill="none" stroke="url(#floor4)" stroke-width="136" stroke-linejoin="round"/>
+  <polyline points="120,270 1210,270"
+            fill="none" stroke="#ebd45c" stroke-width="6" stroke-linejoin="round" stroke-dasharray="22 14" stroke-opacity="0.9"/>
+
+  <g fill="#ffd87a" opacity="0.82">
+    <circle cx="240" cy="270" r="5"/><circle cx="380" cy="270" r="5"/><circle cx="520" cy="270" r="5"/>
+    <circle cx="660" cy="270" r="5"/><circle cx="800" cy="270" r="5"/><circle cx="940" cy="270" r="5"/>
+  </g>
+
+  <rect x="170" y="148" width="720" height="234" rx="28" fill="#dfe5eb" fill-opacity="0.06" stroke="#c0c7ce" stroke-width="3" stroke-dasharray="12 12"/>
+  <text x="435" y="132" class="label" fill="#dbe2e9">滑动窗口</text>
+
+  <g fill="#12161b" stroke="#ffffff" stroke-width="4">
+    <circle cx="220" cy="270" r="10"/><circle cx="380" cy="270" r="10"/><circle cx="540" cy="270" r="10"/>
+    <circle cx="700" cy="270" r="10"/><circle cx="980" cy="270" r="10"/>
+  </g>
+  <text x="205" y="304" class="label">K1</text>
+  <text x="365" y="304" class="label">K2</text>
+  <text x="525" y="304" class="label">K3</text>
+  <text x="685" y="304" class="label">K4</text>
+  <text x="965" y="304" class="label">K5</text>
+
+  <g stroke="#79c7ff" stroke-width="8" stroke-linecap="round" opacity="0.95">
+    <line x1="220" y1="270" x2="272" y2="202"/>
+    <line x1="380" y1="270" x2="430" y2="205"/>
+    <line x1="540" y1="270" x2="588" y2="210"/>
+    <line x1="700" y1="270" x2="752" y2="198"/>
+    <line x1="980" y1="270" x2="1050" y2="236"/>
+  </g>
+
+  <line x1="980" y1="270" x2="1038" y2="192" stroke="#ff6f6f" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="1038,192 1032,224 1009,208" fill="#ff6f6f"/>
+  <text x="1064" y="195" class="label" fill="#ff9c9c">n̄i</text>
+  <text x="1045" y="257" class="label" fill="#9ed5ff">ni</text>
+
+  <path d="M 1014 252 A 56 56 0 0 0 1038 217" fill="none" stroke="#eef2f6" stroke-width="4"/>
+  <text x="995" y="214" class="label">φi</text>
+
+  <rect x="970" y="380" width="325" height="84" rx="18" fill="#0d1116" fill-opacity="0.70" stroke="#39424a"/>
+  <text x="995" y="413" class="label">适合你的 PPT 说法</text>
+  <text x="995" y="440" class="small">窗口内累积侧壁方向形成参考方向，再约束当前帧。</text>
+</svg>

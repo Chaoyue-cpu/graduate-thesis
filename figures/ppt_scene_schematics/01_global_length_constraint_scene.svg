@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#13171c"/>
+      <stop offset="100%" stop-color="#262b31"/>
+    </linearGradient>
+    <linearGradient id="floor1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6f757a"/>
+      <stop offset="50%" stop-color="#878d92"/>
+      <stop offset="100%" stop-color="#6e7479"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 34px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #f3f5f7; }
+      .sub { font: 500 18px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #b9c0c7; }
+      .label { font: 600 20px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #eef2f5; }
+      .small { font: 500 16px 'Noto Sans CJK SC','Microsoft YaHei',sans-serif; fill: #d8dde2; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="520" fill="url(#bg1)"/>
+  <rect x="36" y="30" width="330" height="70" rx="18" fill="#0d1116" fill-opacity="0.62" stroke="#3a444d"/>
+  <text x="62" y="72" class="title">全局长度约束</text>
+  <text x="62" y="97" class="sub">巷道场景化示意图</text>
+
+  <polyline points="120,270 540,270 650,120 1280,120"
+            fill="none" stroke="#0b0e12" stroke-opacity="0.30" stroke-width="178" stroke-linejoin="round"/>
+  <polyline points="120,270 540,270 650,120 1280,120"
+            fill="none" stroke="#41484f" stroke-width="156" stroke-linejoin="round"/>
+  <polyline points="120,270 540,270 650,120 1280,120"
+            fill="none" stroke="url(#floor1)" stroke-width="136" stroke-linejoin="round"/>
+  <polyline points="120,270 540,270 650,120 1280,120"
+            fill="none" stroke="#ebd45c" stroke-width="6" stroke-linejoin="round" stroke-dasharray="22 14" stroke-opacity="0.9"/>
+
+  <line x1="980" y1="120" x2="980" y2="28" stroke="#0b0e12" stroke-opacity="0.30" stroke-width="118"/>
+  <line x1="980" y1="120" x2="980" y2="28" stroke="#41484f" stroke-width="102"/>
+  <line x1="980" y1="120" x2="980" y2="28" stroke="url(#floor1)" stroke-width="88"/>
+  <line x1="980" y1="120" x2="980" y2="28" stroke="#ebd45c" stroke-width="4" stroke-dasharray="18 12" stroke-opacity="0.9"/>
+
+  <line x1="1180" y1="120" x2="1180" y2="222" stroke="#0b0e12" stroke-opacity="0.30" stroke-width="118"/>
+  <line x1="1180" y1="120" x2="1180" y2="222" stroke="#41484f" stroke-width="102"/>
+  <line x1="1180" y1="120" x2="1180" y2="222" stroke="url(#floor1)" stroke-width="88"/>
+  <line x1="1180" y1="120" x2="1180" y2="222" stroke="#ebd45c" stroke-width="4" stroke-dasharray="18 12" stroke-opacity="0.9"/>
+
+  <g fill="#ffd87a" opacity="0.82">
+    <circle cx="220" cy="270" r="5"/><circle cx="320" cy="270" r="5"/><circle cx="420" cy="270" r="5"/>
+    <circle cx="575" cy="222" r="5"/><circle cx="610" cy="173" r="5"/>
+    <circle cx="760" cy="120" r="5"/><circle cx="920" cy="120" r="5"/><circle cx="1080" cy="120" r="5"/><circle cx="1240" cy="120" r="5"/>
+    <circle cx="980" cy="70" r="4"/><circle cx="1180" cy="175" r="4"/>
+  </g>
+
+  <rect x="400" y="188" width="220" height="154" rx="24" fill="#46a9ff" fill-opacity="0.14" stroke="#65bbff" stroke-width="3"/>
+  <rect x="565" y="42" width="250" height="152" rx="24" fill="#ff9d4d" fill-opacity="0.15" stroke="#ffb16c" stroke-width="3"/>
+  <text x="452" y="370" class="label" fill="#93d2ff">候选区间 1</text>
+  <text x="617" y="28" class="label" fill="#ffc592">候选区间 2</text>
+
+  <circle cx="540" cy="270" r="11" fill="#12161b" stroke="#ffffff" stroke-width="4"/>
+  <circle cx="650" cy="120" r="11" fill="#12161b" stroke="#ffffff" stroke-width="4"/>
+  <text x="520" y="304" class="label">c₁</text>
+  <text x="664" y="110" class="label">c₂</text>
+
+  <line x1="540" y1="270" x2="650" y2="120" stroke="#f2f6fb" stroke-width="4" stroke-dasharray="12 10"/>
+  <rect x="552" y="166" width="100" height="40" rx="14" fill="#0d1116" fill-opacity="0.78" stroke="#5d6770"/>
+  <text x="572" y="192" class="label">L<tspan dy="-6" font-size="14">exp</tspan></text>
+
+  <text x="240" y="236" class="small">直段 1</text>
+  <text x="240" y="258" class="small">24 m</text>
+  <text x="585" y="90" class="small">转角段</text>
+  <text x="585" y="112" class="small">18 m</text>
+  <text x="915" y="84" class="small">长巷道主段 + 两个 T 字开口</text>
+  <text x="948" y="18" class="small">支巷 A</text>
+  <text x="1194" y="246" class="small">支巷 B</text>
+
+  <rect x="1010" y="400" width="320" height="78" rx="18" fill="#0d1116" fill-opacity="0.70" stroke="#39424a"/>
+  <text x="1035" y="433" class="label">设计建议</text>
+  <text x="1035" y="460" class="small">PPT 中可先放真实巷道图，再叠加本示意层。</text>
+</svg>
