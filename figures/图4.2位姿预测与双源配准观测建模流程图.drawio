@@ -1,0 +1,144 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) draw.io" version="29.6.6">
+  <diagram id="ch4-observation-42" name="图4.2">
+    <mxGraphModel dx="1700" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="950" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_lastpose" value="上一时刻位姿&lt;br&gt;$$\hat{\mathbf{T}}_{k-1}$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="70" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_imu" value="IMU 测量 / 运动信息" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="370" y="70" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_predict" value="UKF 运动学预测&lt;br&gt;生成初始位姿 $$\mathbf{T}_k^0$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="180" y="220" width="300" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_prevcloud" value="上一帧点云&lt;br&gt;$$\mathcal{P}_{k-1}$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="60" y="400" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_curcloud1" value="当前帧点云&lt;br&gt;$$\mathcal{P}_k$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="380" y="400" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_f2f" value="帧间 GICP 配准&lt;br&gt;局部位姿观测" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="180" y="540" width="300" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_f2fout" value="帧间位姿观测&lt;br&gt;$$\hat{\mathbf{T}}_k^f,\ s_k^f$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="60" y="690" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_f2fconf" value="基础置信度&lt;br&gt;$$c_k^f$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="350" y="690" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_initsel" value="递进式初值选择&lt;br&gt;$$\hat{\mathbf{T}}_k^f$$ 优先" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="700" y="220" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_map" value="先验地图&lt;br&gt;$$\mathcal{M}$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="70" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_curcloud2" value="当前帧点云&lt;br&gt;$$\mathcal{P}_k$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="400" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_mapreg" value="帧到地图 NDT 配准&lt;br&gt;全局位姿观测" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="860" y="540" width="320" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_mapout" value="地图位姿观测&lt;br&gt;$$\hat{\mathbf{T}}_k^m,\ s_k^m$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="760" y="690" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_mapconf" value="基础置信度&lt;br&gt;$$c_k^m$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="690" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_out" value="输出双源观测&lt;br&gt;供后续融合使用" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f4cccc;strokeColor=#cc0000;strokeWidth=2;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="500" y="840" width="360" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="t_pred" value="预测层" style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="250" y="20" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_local" value="局部观测支路" style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="240" y="330" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_global" value="全局观测支路" style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="960" y="20" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_lastpose" target="n_predict" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_imu" target="n_predict" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_predict" target="n_f2f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_prevcloud" target="n_f2f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_curcloud1" target="n_f2f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_f2f" target="n_f2fout" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="n_f2f" target="n_f2fconf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="n_predict" target="n_initsel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="n_f2fout" target="n_initsel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="730" />
+              <mxPoint x="660" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="n_initsel" target="n_mapreg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="n_map" target="n_mapreg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="250" />
+              <mxPoint x="1210" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="n_curcloud2" target="n_mapreg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="n_mapreg" target="n_mapout" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="n_mapreg" target="n_mapconf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="n_f2fout" target="n_out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="185" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="n_f2fconf" target="n_out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="475" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="n_mapout" target="n_out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="885" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="n_mapconf" target="n_out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1175" y="810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,60 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) draw.io" version="29.6.6">
+  <diagram id="ch5-state-52" name="图5.2">
+    <mxGraphModel dx="1300" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_normal" value="正常跟踪" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="80" y="260" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_suspect" value="可疑监视&lt;br&gt;岔口窗口内持续退化" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="410" y="260" width="260" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n_relocal" value="重定位执行&lt;br&gt;全局检索与局部复核" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="790" y="260" width="260" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n_recover" value="恢复确认&lt;br&gt;补偿写回并短时监测" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="430" y="500" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_normal" target="n_suspect" value="$$\mathcal{W}_k^{\mathrm{br}}=1,\ c_k^{\mathrm{loc}}&lt;\tau_{\mathrm{loc}}$$" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_suspect" target="n_relocal" value="$$n_k^{\mathrm{bad}}\ge M$$" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_relocal" target="n_recover" value="候选通过验收" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="420" />
+              <mxPoint x="920" y="545" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_recover" target="n_normal" value="质量恢复稳定" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="620" />
+              <mxPoint x="300" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_suspect" target="n_normal" value="窗口结束或质量恢复" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="400" />
+              <mxPoint x="185" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_relocal" target="n_suspect" value="候选复核失败" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="180" />
+              <mxPoint x="540" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

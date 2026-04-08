@@ -1,0 +1,117 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) draw.io" version="29.6.6">
+  <diagram id="ch4-framework-41" name="图4.1">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_cloud" value="当前帧点云&lt;br&gt;$$\mathcal{P}_k$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_pred" value="运动预测信息&lt;br&gt;IMU / 滤波状态" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="390" y="80" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_map" value="先验地图&lt;br&gt;$$\mathcal{M}$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="730" y="80" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_voxel" value="先验体素表&lt;br&gt;$$\mathcal{V}$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="250" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_axis" value="巷道中轴 / 轴向参考" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="500" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_pre" value="点云预处理&lt;br&gt;坐标统一、去车体、下采样" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="60" y="260" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_obs" value="位姿预测与&lt;br&gt;双源配准观测" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="360" y="260" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_conf" value="基础观测与&lt;br&gt;置信度输出" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="680" y="260" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_voxelhit" value="先验体素命中统计&lt;br&gt;地图观测非轴向置信修正" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="290" y="500" width="300" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_axisdec" value="轴向 / 非轴向分解&lt;br&gt;方向性观测分量提取" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="690" y="500" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_fuse" value="差异化融合估计&lt;br&gt;$$\hat{\mathbf{T}}_k$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f4cccc;strokeColor=#cc0000;strokeWidth=2;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="490" y="690" width="280" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="t_left" value="先验体素约束支路" style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="350" y="810" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_right" value="轴向分解融合支路" style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="760" y="810" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_cloud" target="n_pre" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_pred" target="n_obs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_map" target="n_obs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="820" y="200" />
+              <mxPoint x="580" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_pre" target="n_obs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_obs" target="n_conf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_pre" target="n_voxelhit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="420" />
+              <mxPoint x="170" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="n_map" target="n_voxelhit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="910" y="200" />
+              <mxPoint x="1030" y="200" />
+              <mxPoint x="1030" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="n_voxel" target="n_voxelhit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="n_conf" target="n_axisdec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="n_axis" target="n_axisdec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="n_voxelhit" target="n_fuse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="n_axisdec" target="n_fuse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="n_conf" target="n_fuse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="430" />
+              <mxPoint x="790" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,72 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram id="posegraph-pipeline-32" name="图3.2">
+    <mxGraphModel dx="1139" dy="782" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=15;" value="点云观测与外部位姿" vertex="1">
+          <mxGeometry height="50" width="168" x="396" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_assoc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=15;" value="点云-位姿时间关联" vertex="1">
+          <mxGeometry height="50" width="168" x="396" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="zVI5Zd99KXCs4RowxFy5-3" edge="1" parent="1" source="n_kf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="n_node" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n_kf" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#bf9000;strokeWidth=2;fontSize=15;" value="是否满足&#xa;关键帧选取条件" vertex="1">
+          <mxGeometry height="82" width="180" x="390" y="228" as="geometry" />
+        </mxCell>
+        <mxCell id="n_node" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=15;" value="关键帧节点初始化" vertex="1">
+          <mxGeometry height="50" width="168" x="396" y="344" as="geometry" />
+        </mxCell>
+        <mxCell id="n_rel" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=15;" value="相对位姿测量计算" vertex="1">
+          <mxGeometry height="50" width="168" x="396" y="424" as="geometry" />
+        </mxCell>
+        <mxCell id="n_edge" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=15;" value="相邻节点约束构建" vertex="1">
+          <mxGeometry height="50" width="168" x="396" y="504" as="geometry" />
+        </mxCell>
+        <mxCell id="n_posegraph" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f4cccc;strokeColor=#cc0000;strokeWidth=2;fontSize=15;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;基础位姿图生成&lt;/span&gt;" vertex="1">
+          <mxGeometry height="52" width="168" x="396" y="584" as="geometry" />
+        </mxCell>
+        <mxCell id="zVI5Zd99KXCs4RowxFy5-2" edge="1" parent="1" source="n_skip" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" target="n_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="712" y="95" />
+            </Array>
+            <mxPoint x="640" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_skip" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#efefef;strokeColor=#666666;strokeWidth=2;fontSize=15;" value="非关键帧&#xa;转入下一帧处理" vertex="1">
+          <mxGeometry height="58" width="168" x="628" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_input" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" target="n_assoc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_assoc" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" target="n_kf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_kf" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=13;" target="n_node" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_node" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" target="n_rel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_rel" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" target="n_edge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_edge" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;" target="n_posegraph">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="n_kf" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=13;" target="n_skip" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zVI5Zd99KXCs4RowxFy5-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=13;" value="是" vertex="1">
+          <mxGeometry height="26" width="44" x="473" y="311" as="geometry" />
+        </mxCell>
+        <mxCell id="zVI5Zd99KXCs4RowxFy5-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=13;" value="否" vertex="1">
+          <mxGeometry height="26" width="44" x="575" y="244" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

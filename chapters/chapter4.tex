@@ -7,50 +7,7 @@
 针对上述问题，本章提出一种基于先验体素约束与轴向分解融合的矿井定位方法，整体流程如图~\ref{fig:ch4_localization_framework} 所示。
 \begin{figure}[htbp]
     \centering
-    \makebox[\textwidth][c]{%
-    \begin{tikzpicture}[
-        x=1.16cm,y=1.18cm,
-        io/.style={draw, rounded corners=3pt, thick, fill=blue!6, minimum width=2.8cm, minimum height=1.15cm, align=center, font=\small},
-        block/.style={draw, rounded corners=4pt, thick, fill=orange!10, minimum width=3.45cm, minimum height=1.25cm, align=center, font=\small},
-        branch/.style={draw, rounded corners=4pt, thick, fill=green!10, minimum width=3.55cm, minimum height=1.25cm, align=center, font=\small},
-        fusion/.style={draw, rounded corners=4pt, thick, fill=red!9, minimum width=3.8cm, minimum height=1.25cm, align=center, font=\small},
-        note/.style={font=\small},
-        line/.style={-{Latex[length=2mm]}, thick}
-    ]
-        \node[io] (cloud) at (0.2,5.1) {当前帧点云\\$\mathcal{P}_k$};
-        \node[io] (pred) at (4.5,5.1) {运动预测信息\\IMU/滤波状态};
-        \node[io] (map) at (8.8,5.1) {先验地图\\$\mathcal{M}$};
-        \node[io] (voxel) at (11.7,3.2) {先验体素表\\$\mathcal{V}$};
-        \node[io] (axis) at (11.7,0.6) {巷道中轴/\\轴向参考};
-
-        \node[block] (pre) at (0.2,3.2) {点云预处理\\坐标统一、去车体、下采样};
-        \node[block] (obs) at (4.5,3.2) {位姿预测与\\双源配准观测};
-        \node[block] (baseconf) at (8.8,3.2) {基础观测与\\置信度输出};
-
-        \node[branch] (voxelhit) at (4.5,0.6) {先验体素命中统计\\地图观测非轴向置信修正};
-        \node[branch] (axisdec) at (8.8,0.6) {轴向/非轴向分解\\方向性观测分量提取};
-        \node[fusion] (fuse) at (6.65,-1.7) {差异化融合估计\\$\hat{\mathbf{T}}_k$};
-
-        \draw[line] (cloud) -- (pre);
-        \draw[line] (pred) -- (obs);
-        \draw[line] (map) -- (obs);
-        \draw[line] (pre) -- (obs);
-        \draw[line] (obs) -- (baseconf);
-
-        \draw[line] (pre.south) -- ++(0,-0.55) -| (voxelhit.west);
-        \draw[line] (baseconf.south) -- (axisdec.north);
-        \draw[line] (map.south) |- (voxelhit.north east);
-        \draw[line] (voxel.west) -- (voxelhit.east);
-        \draw[line] (axis.west) -- (axisdec.east);
-
-        \draw[line] (voxelhit.south) -- ++(0,-0.5) -| (fuse.west);
-        \draw[line] (axisdec.south) -- ++(0,-0.5) -| (fuse.east);
-        \draw[line] (baseconf.south) -- ++(0,-0.7) -| (fuse.north);
-
-        \node[note] at (3.45,-2.95) {先验体素约束支路};
-        \node[note] at (9.05,-2.95) {轴向分解融合支路};
-    \end{tikzpicture}
-    }
+    \includegraphics[width=0.98\linewidth]{figures/图4.1基于先验体素约束与轴向分解融合的矿井定位总体框架图.drawio.pdf}
     \caption{基于先验体素约束与轴向分解融合的矿井定位总体框架图}
     \label{fig:ch4_localization_framework}
 \end{figure}
@@ -72,61 +29,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\textwidth][c]{%
-    \begin{tikzpicture}[
-        x=1.10cm,y=1.15cm,
-        io/.style={draw, rounded corners=3pt, thick, fill=blue!6, minimum width=2.85cm, minimum height=1.1cm, align=center, font=\small},
-        proc/.style={draw, rounded corners=4pt, thick, fill=orange!10, minimum width=3.25cm, minimum height=1.2cm, align=center, font=\small},
-        obsbox/.style={draw, rounded corners=4pt, thick, fill=green!10, minimum width=3.05cm, minimum height=1.1cm, align=center, font=\small},
-        note/.style={font=\small},
-        line/.style={-{Latex[length=2mm]}, thick}
-    ]
-        \node[io] (lastpose) at (0.0,5.8) {上一时刻位姿\\$\hat{\mathbf{T}}_{k-1}$};
-        \node[io] (imu) at (4.1,5.8) {IMU测量/\\运动信息};
-        \node[proc] (predict) at (2.05,4.1) {UKF运动学预测\\生成初始位姿$\mathbf{T}_k^0$};
-
-        \node[io] (prevcloud) at (0.0,2.0) {上一帧点云\\$\mathcal{P}_{k-1}$};
-        \node[io] (curcloud1) at (4.1,2.0) {当前帧点云\\$\mathcal{P}_k$};
-        \node[proc] (f2f) at (2.05,0.1) {帧间GICP配准\\局部位姿观测};
-        \node[obsbox] (f2fout) at (0.0,-2.0) {帧间位姿观测\\$\hat{\mathbf{T}}_k^f,\; s_k^f$};
-        \node[obsbox] (f2fconf) at (4.1,-2.0) {基础置信度\\$c_k^f$};
-
-        \node[proc] (initsel) at (8.2,4.1) {递进式初值选择\\$\hat{\mathbf{T}}_k^f$ 优先};
-        \node[io] (map) at (12.3,5.8) {先验地图\\$\mathcal{M}$};
-        \node[io] (curcloud2) at (12.3,2.0) {当前帧点云\\$\mathcal{P}_k$};
-        \node[proc] (mapreg) at (10.25,0.1) {帧到地图NDT配准\\全局位姿观测};
-        \node[obsbox] (mapout) at (8.2,-2.0) {地图位姿观测\\$\hat{\mathbf{T}}_k^m,\; s_k^m$};
-        \node[obsbox] (mapconf) at (12.3,-2.0) {基础置信度\\$c_k^m$};
-
-        \node[proc] (obsout) at (6.15,-4.35) {输出双源观测\\供后续融合使用};
-
-        \draw[line] (lastpose.south) -- (predict.north west);
-        \draw[line] (imu.south) -- (predict.north east);
-
-        \draw[line] (predict.south) -- (f2f.north);
-        \draw[line] (prevcloud.north) -- ++(0,0.4) -| (f2f.west);
-        \draw[line] (curcloud1.north) -- ++(0,0.4) -| (f2f.east);
-        \draw[line] (f2f.south west) -- (f2fout.north);
-        \draw[line] (f2f.south east) -- (f2fconf.north);
-
-        \draw[line] (predict.east) -- (initsel.west);
-        \draw[line] (f2fout.east) |- (initsel.south west);
-        \draw[line] (initsel.south) -- (mapreg.north);
-        \draw[line] (map.south) -- ++(0,-0.55) -| (mapreg.north east);
-        \draw[line] (curcloud2.south) -- ++(0,-0.45) -| (mapreg.east);
-        \draw[line] (mapreg.south west) -- (mapout.north);
-        \draw[line] (mapreg.south east) -- (mapconf.north);
-
-        \draw[line] (f2fout.south) -- ++(0,-0.45) -| (obsout.west);
-        \draw[line] (f2fconf.south) -- ++(0,-0.45) -| (obsout.west);
-        \draw[line] (mapout.south) -- ++(0,-0.45) -| (obsout.east);
-        \draw[line] (mapconf.south) -- ++(0,-0.45) -| (obsout.east);
-
-        \node[note] at (2.05,6.75) {预测层};
-        \node[note] at (2.05,0.85) {局部观测支路};
-        \node[note] at (10.25,6.75) {全局观测支路};
-    \end{tikzpicture}
-    }
+    \includegraphics[width=0.98\linewidth]{figures/图4.2位姿预测与双源配准观测建模流程图.drawio.pdf}
     \caption{位姿预测与双源配准观测建模流程图}
     \label{fig:ch4_progressive_observation}
 \end{figure}
@@ -501,7 +404,7 @@ c_{k}^{m}
 \psi\!\left(s_{k}^{m}\right)
 \end{equation}
 
-其中，$\psi(\cdot)$ 与上一小节中的帧间置信度映射函数保持一致。由此可见，当匹配得分较优时，地图观测置信度趋近于 1；当匹配得分恶化时，其置信度逐步下降。该置信度将与后续先验体素约束和轴向分解机制共同作用，为差异化融合提供权重依据。
+其中，$\psi(\cdot)$ 与上一小节中的帧间置信度映射函数保持一致，$c_{k}^{m}$ 将作为后续先验体素约束与差异化融合的基础权重。
 
 \section{先验体素约束的地图观测置信建模}
 
@@ -566,7 +469,7 @@ r_{k}^{v}
 \right)
 \end{equation}
 
-其中，$r_{\mathrm{good}}$ 与 $r_{\mathrm{bad}}$ 分别表示体素命中率较高和较低时的参考边界，$\eta_{\min}$ 表示一致性系数下界。由此可见，命中率越高，对应的一致性系数越大；当命中率较低时，其取值不会低于 $\eta_{\min}$。
+其中，$r_{\mathrm{good}}$ 与 $r_{\mathrm{bad}}$ 分别表示体素命中率较高和较低时的参考边界，$\eta_{\min}$ 表示一致性系数下界，$\mathrm{clip}(x,0,1)$ 表示将变量 $x$ 截断到区间 $[0,1]$ 内。由此可见，命中率越高，对应的一致性系数越大；当命中率较低时，其取值不会低于 $\eta_{\min}$。
 
 在此基础上，地图观测在非轴向方向上的修正置信度可定义为：
 \begin{equation}
@@ -575,27 +478,34 @@ r_{k}^{v}
 c_{k}^{m}\eta_{k}^{v}
 \end{equation}
 
-其中，$c_{k}^{m}$ 为上一节依据地图配准得分得到的基础置信度，$\bar{c}_{k,\perp}^{m}$ 为经先验体素一致性修正后的非轴向置信度。由此可见，先验体素约束并不改变地图观测的位姿结果本身，而是通过附加的一致性判据调节其在后续融合中的影响强度。特别地，当地图观测在横断面方向上与先验结构具有较高一致性时，其非轴向约束作用得到保留；而当一致性较差时，其非轴向影响将被显著削弱，从而降低错误地图观测对最终定位结果的干扰。
+其中，$c_{k}^{m}$ 为上一节依据地图配准得分得到的基础置信度，$\bar{c}_{k,\perp}^{m}$ 为经先验体素一致性修正后的非轴向置信度。
 
 \section{基于轴向分解的差异化位姿融合}
 
-在获得帧间观测、地图观测以及基于先验体素修正后的地图非轴向置信度后，还需要进一步考虑矿井巷道场景在几何结构上的方向性差异。具体而言，巷道沿延伸方向通常缺乏足够显著的唯一性结构，地图观测在该方向上更容易受重复结构影响；而在横断面方向上，巷道壁面、边界及与先验地图的几何对应关系通常更为稳定。因此，若仍采用统一方式直接融合不同观测的平移分量，则难以充分利用矿井场景中“轴向弱约束、非轴向强约束”的结构特点。
-
-基于此，本文引入巷道中轴作为局部参考方向，将平移观测分解为轴向分量与非轴向分量，并针对不同方向上的观测特性进行差异化融合。其中，轴向分量主要保持帧间观测的连续性优势，非轴向分量则更加依赖经过先验体素修正后的地图观测，以此增强最终定位结果在矿井场景中的稳定性。
+在矿井巷道场景中，帧间观测与地图观测在不同方向上的作用并不相同。当局部点云特征较为充分时，帧间配准能够提供较稳定的短时相对位姿约束，有助于维持相邻时刻之间的运动连续性；但受巷道重复结构影响，仅依赖帧间观测仍易产生累积漂移。相比之下，地图观测在横断面方向上通常能够提供更稳定的结构约束，而在轴向方向上的判别性相对有限。因此，本文引入巷道中轴作为局部参考方向，将平移观测分解为轴向分量与非轴向分量，并实施差异化融合：轴向分量侧重利用帧间观测维持局部连续性，非轴向分量则更多依赖经先验体素一致性修正后的地图观测，以兼顾短时连续性与稳定结构约束。
 
 \subsection{巷道中轴投影与平移观测分解}
 
-设矿井巷道中轴线由参数曲线 $\mathbf{c}(s)$ 表示，其中 $s$ 为弧长参数。为获得当前时刻的局部轴向参考，本文以初始预测位置 $\mathbf{p}_{k}^{0}$ 为基准，在中轴线上搜索其最近投影点，即：
+为构建巷道中轴先验，本文根据先验地图的平面结构分布，结合巷道整体走向人工标注中心折线，并沿折线按弧长进行均匀采样，形成带弧长参数的中轴线表示；进一步结合巷道高程信息对其进行三维扩展，最终得到用于轴向分解与差异化融合的三维中轴先验，如图~\ref{fig:ch4_axis_centerline_prior} 所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{figures/图4-3先验地图平面结构上的巷道中轴标注结果-1.png}
+    \caption{先验地图平面结构上的巷道中轴标注结果}
+    \label{fig:ch4_axis_centerline_prior}
+\end{figure}
+
+设矿井巷道中轴线由参数曲线 $\mathbf{c}(s)$ 表示，其中 $s$ 为弧长参数。考虑到中轴主要用于刻画巷道在水平平面内的延伸方向，本文以初始预测位置在 $XY$ 平面上的投影 $\mathbf{p}_{k,xy}^{0}$ 为基准，在中轴线平面投影 $\mathbf{c}_{xy}(s)$ 上搜索其最近投影点，即：
 \begin{equation}
 s_{k}^{\ast}
 =
 \arg \min_{s}
 \left\|
-\mathbf{p}_{k}^{0}-\mathbf{c}(s)
-\right\|_{2}^{2}
+\mathbf{p}_{k,xy}^{0}-\mathbf{c}_{xy}(s)
+\right\|_{2}
 \end{equation}
 
-由此得到当前时刻对应的中轴参考点：
+式中采用欧氏距离形式以便于表述，工程实现中等价地采用其平方形式以避免重复开方。由此得到当前时刻对应的中轴参考点：
 \begin{equation}
 \mathbf{c}_{k}
 =
@@ -623,15 +533,15 @@ s_{k}^{\ast}
 \begin{equation}
 \delta \mathbf{p}_{k,\parallel}^{j}
 =
-\mathbf{u}_{k}\mathbf{u}_{k}^{\mathrm T}\delta \mathbf{p}_{k}^{j}
+\left(\mathbf{u}_{k}^{\mathrm T}\delta \mathbf{p}_{k}^{j}\right)\mathbf{u}_{k}
 \end{equation}
 \begin{equation}
 \delta \mathbf{p}_{k,\perp}^{j}
 =
-\left(\mathbf{I}-\mathbf{u}_{k}\mathbf{u}_{k}^{\mathrm T}\right)\delta \mathbf{p}_{k}^{j}
+\delta \mathbf{p}_{k}^{j}-\delta \mathbf{p}_{k,\parallel}^{j}
 \end{equation}
 
-其中，$\mathbf{I}$ 为 $3\times 3$ 单位矩阵。由定义可知，$\delta \mathbf{p}_{k,\parallel}^{j}$ 表示观测在巷道延伸方向上的投影，$\delta \mathbf{p}_{k,\perp}^{j}$ 表示观测在横断面方向上的偏移量，且有：
+其中，$\delta \mathbf{p}_{k,\parallel}^{j}$ 表示对应的轴向投影向量，$\delta \mathbf{p}_{k,\perp}^{j}$ 表示去除轴向分量后剩余的非轴向偏移量。由此有：
 \begin{equation}
 \hat{\mathbf{p}}_{k}^{j}
 =
@@ -640,43 +550,58 @@ s_{k}^{\ast}
 +\delta \mathbf{p}_{k,\perp}^{j}
 \end{equation}
 
-通过上述分解，可将原本统一处理的平移观测转换为具有明确物理含义的方向性分量，从而为后续差异化加权融合提供基础。
+通过上述分解，平移观测可表示为沿中轴方向与垂直中轴方向的两部分，从而为后续差异化加权融合提供基础。
 
 \subsection{轴向与非轴向分量的差异化融合}
 
-在矿井巷道场景中，帧间观测通常能够较好地反映相邻时刻之间的局部运动连续性，因此在轴向方向上具有较强参考价值；而地图观测在非轴向方向上与先验结构的几何对应关系更为稳定，尤其在经过体素命中一致性修正后，其横断面约束作用更值得保留。基于这一考虑，本文分别为轴向分量与非轴向分量定义不同的融合权重：
+上一小节给出了平移观测的轴向与非轴向分解，但该分解仅改变观测的表示方式，并未改变两类观测在不同方向上的作用比例。前文第~4.2 节已分别构造帧间观测与地图观测的基础置信度，第~4.3 节进一步给出了地图观测在非轴向方向上的修正置信度。基于这些量，本文进一步构造方向相关的有效权重，再分别完成轴向分量与非轴向分量的融合。设 $c_{k}^{f}$ 与 $c_{k}^{m}$ 分别表示帧间观测与地图观测的基础置信度，$\bar{c}_{k,\perp}^{m}$ 表示经先验体素一致性修正后的地图非轴向置信度，则定义：
 \begin{equation}
-w_{k,\parallel}^{f}=c_{k}^{f},
+\tilde{c}_{k,\parallel}^{f}
+=
+\lambda_{\parallel}^{f}c_{k}^{f},
 \qquad
-w_{k,\parallel}^{m}=\lambda_{\parallel}c_{k}^{m}
+\tilde{c}_{k,\parallel}^{m}
+=
+\lambda_{\parallel}^{m}c_{k}^{m}
 \end{equation}
 \begin{equation}
-w_{k,\perp}^{f}=c_{k}^{f},
+\tilde{c}_{k,\perp}^{f}
+=
+\lambda_{\perp}^{f}c_{k}^{f},
 \qquad
-w_{k,\perp}^{m}=\lambda_{\perp}\bar{c}_{k,\perp}^{m}
+\tilde{c}_{k,\perp}^{m}
+=
+\lambda_{\perp}^{m}\bar{c}_{k,\perp}^{m}
 \end{equation}
-其中，$\lambda_{\parallel}$ 与 $\lambda_{\perp}$ 分别为地图观测在轴向和非轴向方向上的调节系数，通常取 $0<\lambda_{\parallel}<\lambda_{\perp}$，以体现对地图观测方向性可信程度的差异化处理。
 
-于是，轴向与非轴向分量的融合结果可分别表示为：
+其中，$\lambda_{\parallel}^{f}$、$\lambda_{\perp}^{f}$、$\lambda_{\parallel}^{m}$ 和 $\lambda_{\perp}^{m}$ 为固定方向增益系数，分别用于调节帧间观测与地图观测在轴向和非轴向方向上的作用比例。通常取 $\lambda_{\parallel}^{f}>\lambda_{\perp}^{f}$ 且 $\lambda_{\parallel}^{m}<\lambda_{\perp}^{m}$，以体现轴向方向更侧重帧间连续性、非轴向方向更侧重地图结构约束的设计思想。
+
+在此基础上，可分别定义帧间观测在轴向与非轴向融合中的归一化权重：
+\begin{equation}
+\alpha_{k,\parallel}
+=
+\frac{\tilde{c}_{k,\parallel}^{f}}
+{\tilde{c}_{k,\parallel}^{f}+\tilde{c}_{k,\parallel}^{m}}
+\end{equation}
+\begin{equation}
+\alpha_{k,\perp}
+=
+\frac{\tilde{c}_{k,\perp}^{f}}
+{\tilde{c}_{k,\perp}^{f}+\tilde{c}_{k,\perp}^{m}}
+\end{equation}
+
+于是，轴向分量与非轴向分量的融合结果可分别写为：
 \begin{equation}
 \hat{\delta \mathbf{p}}_{k,\parallel}
 =
-\frac{
-w_{k,\parallel}^{f}\delta \mathbf{p}_{k,\parallel}^{f}
-+w_{k,\parallel}^{m}\delta \mathbf{p}_{k,\parallel}^{m}
-}{
-w_{k,\parallel}^{f}+w_{k,\parallel}^{m}
-}
+\left(1-\alpha_{k,\parallel}\right)\delta \mathbf{p}_{k,\parallel}^{m}
++\alpha_{k,\parallel}\delta \mathbf{p}_{k,\parallel}^{f}
 \end{equation}
 \begin{equation}
 \hat{\delta \mathbf{p}}_{k,\perp}
 =
-\frac{
-w_{k,\perp}^{f}\delta \mathbf{p}_{k,\perp}^{f}
-+w_{k,\perp}^{m}\delta \mathbf{p}_{k,\perp}^{m}
-}{
-w_{k,\perp}^{f}+w_{k,\perp}^{m}
-}
+\left(1-\alpha_{k,\perp}\right)\delta \mathbf{p}_{k,\perp}^{m}
++\alpha_{k,\perp}\delta \mathbf{p}_{k,\perp}^{f}
 \end{equation}
 
 由此可得最终融合位置估计：
@@ -688,24 +613,13 @@ w_{k,\perp}^{f}+w_{k,\perp}^{m}
 +\hat{\delta \mathbf{p}}_{k,\perp}
 \end{equation}
 
-当某一类观测在当前时刻不可用或置信度极低时，对应分量可退化为另一有效观测或预测值，从而保证定位结果的连续性。
+可见，轴向分解解决的是“如何按照巷道几何方向拆分平移观测”，而方向增益调节解决的是“拆分之后在各方向上如何分配帧间观测与地图观测的作用比例”。
 
-对于姿态分量，本文不再进行轴向分解，而是仍依据观测置信度进行整体融合。设帧间观测与地图观测对应的姿态分别为 $\hat{\mathbf{q}}_{k}^{f}$ 和 $\hat{\mathbf{q}}_{k}^{m}$，并定义综合地图置信度：
+对于姿态分量，本文不再进行轴向分解，而是仍依据两类观测的整体置信度进行融合。设帧间观测与地图观测对应的姿态分别为 $\hat{\mathbf{q}}_{k}^{f}$ 和 $\hat{\mathbf{q}}_{k}^{m}$，则定义帧间姿态观测的融合系数为：
 \begin{equation}
-\bar{c}_{k}^{m}
+\alpha_{k}^{q}
 =
-\frac{1}{2}
-\left(
-\lambda_{\parallel}c_{k}^{m}
-+\lambda_{\perp}\bar{c}_{k,\perp}^{m}
-\right)
-\end{equation}
-
-则姿态融合系数可写为：
-\begin{equation}
-\alpha_{k}
-=
-\frac{\bar{c}_{k}^{m}}{c_{k}^{f}+\bar{c}_{k}^{m}}
+\frac{c_{k}^{f}}{c_{k}^{f}+c_{k}^{m}}
 \end{equation}
 
 进一步地，利用四元数球面线性插值可得到最终姿态估计：
@@ -714,9 +628,9 @@ w_{k,\perp}^{f}+w_{k,\perp}^{m}
 =
 \mathrm{Slerp}
 \left(
-\hat{\mathbf{q}}_{k}^{f},
 \hat{\mathbf{q}}_{k}^{m},
-\alpha_{k}
+\hat{\mathbf{q}}_{k}^{f},
+\alpha_{k}^{q}
 \right)
 \end{equation}
 
@@ -730,7 +644,7 @@ w_{k,\perp}^{f}+w_{k,\perp}^{m}
 \end{bmatrix}
 \end{equation}
 
-综上，本文通过先验体素一致性对地图观测的非轴向置信度进行修正，并进一步结合巷道中轴对平移观测进行轴向/非轴向分解，从而构造了适用于矿井巷道场景的差异化位姿融合方法。该方法能够在轴向方向上保持局部运动连续性，在非轴向方向上强化先验地图的结构约束，进而提高复杂巷道环境下定位结果的稳定性与鲁棒性。
+上述融合在轴向方向保持局部运动连续性，在非轴向方向强化先验地图约束，以提升复杂巷道环境中的定位稳定性。
 
 \section{本章小结}
 

@@ -1,0 +1,94 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) draw.io" version="29.6.6">
+  <diagram id="ch5-framework-51" name="图5.1">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1450" pageHeight="900" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_scan" value="当前帧点云&lt;br&gt;$$\mathcal{P}_k$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="80" width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_local" value="连续定位结果&lt;br&gt;$$\hat{\mathbf{T}}_k,\ c_k^{\mathrm{loc}}$$" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="390" y="80" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_map" value="先验地图与&lt;br&gt;巷道拓扑" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9e8fb;strokeColor=#3d85c6;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="790" y="80" width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n_struct" value="岔口结构特征提取&lt;br&gt;与描述建模" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="70" y="280" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_quality" value="局部定位退化评估&lt;br&gt;误差 / 内点率 / 残差" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="400" y="280" width="280" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_trigger" value="结构约束与质量门控&lt;br&gt;自主触发判定" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="770" y="255" width="260" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="n_global" value="全局候选位姿检索&lt;br&gt;BBS / FPFH-RANSAC / FPFH-Teaser++" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#d9ead3;strokeColor=#6aa84f;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="280" width="310" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_verify" value="局部精配准复核&lt;br&gt;候选排序与精选" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fce5cd;strokeColor=#e69138;strokeWidth=2;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="320" y="500" width="300" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_update" value="异步时延补偿&lt;br&gt;位姿重置与状态更新" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f4cccc;strokeColor=#cc0000;strokeWidth=2;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="830" y="500" width="310" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_scan" target="n_struct" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_scan" target="n_quality" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="175" y="210" />
+              <mxPoint x="175" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_local" target="n_quality" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_map" target="n_struct" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="895" y="200" />
+              <mxPoint x="895" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_struct" target="n_trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_quality" target="n_trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="n_trigger" target="n_global" value="触发" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;fontSize=14;labelBackgroundColor=#ffffff;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="n_global" target="n_verify" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1245" y="430" />
+              <mxPoint x="580" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="n_scan" target="n_verify" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="175" y="430" />
+              <mxPoint x="470" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="n_verify" target="n_update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="n_local" target="n_update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="525" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
