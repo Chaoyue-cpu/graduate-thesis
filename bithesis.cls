@@ -408,7 +408,7 @@
 \keys_define:nn { bithesis / info }
   {
     title .tl_set:N = \l__bithesis_value_title_tl,
-    title .initial:n = {形状记忆聚氨酯的合成及其在织物中的应用（示例）},
+    title .initial:n = {基于多源结构先验的矿井巷道定位方法研究},
     titleEn .tl_set:N = \l__bithesis_value_title_en_tl,
     titleEn .initial:n = {Synthesis~and~Application~on~Texttiles~of~the~Shape~Memory~Polyurethane~(example)},
     % 因为是覆盖选项，所以不需要设置初始值。
