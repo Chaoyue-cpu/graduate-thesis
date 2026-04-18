@@ -1,0 +1,26 @@
+\documentclass{ctexart}
+\usepackage[paperwidth=190mm,paperheight=100mm,margin=4mm]{geometry}
+\usepackage{tikz}
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\begin{tikzpicture}[x=0.9cm,y=0.9cm,node distance=7mm and 8mm]
+\input{_styles.tex}
+
+\draw[chfive/tile] (0,0) rectangle (4,2.2);
+\draw[chfive/tile] (4,0) rectangle (8,2.2);
+\draw[chfive/boundary] (4,-0.2) -- (4,2.4);
+\node[chfive/lab] at (2,2.55) {稳定原点 A};
+\node[chfive/lab] at (6,2.55) {候选原点 B};
+\draw[chfive/traj] (1,1.1) .. controls (2.8,1.7) and (5.1,0.5) .. (7,1.2);
+\fill[black] (3.8,1.3) circle (2pt);
+\fill[black] (4.4,1.0) circle (2pt);
+\node[chfive/lab, below] at (3.8,1.3) {边界抖动};
+\node[chfive/lab, below] at (4.7,0.4) {连续 $N_h$ 次确认后切换};
+
+\node[chfive/box] (gate) at (2,-2.2) {距离门控\\$\|\mathbf p_k-\mathbf p_{k-1}^{\mathrm{eval}}\|\ge d_{\mathrm{th}}$};
+\node[chfive/box] (hys) at (6,-2.2) {原点滞回\\候选原点连续确认 $N_h$ 次};
+\draw[chfive/arr] (4,-0.1) -- ++(0,-0.8) -| (gate.north);
+\draw[chfive/arr] (4,-0.1) -- ++(0,-0.8) -| (hys.north);
+\end{tikzpicture}
+\end{document}

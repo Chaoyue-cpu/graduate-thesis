@@ -1,0 +1,34 @@
+\documentclass{ctexart}
+\usepackage[paperwidth=215mm,paperheight=105mm,margin=4mm]{geometry}
+\usepackage{tikz}
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\begin{tikzpicture}[node distance=10mm and 10mm]
+\input{_styles.tex}
+
+\node[chfive/data] (map) {第三章离线高精地图};
+\node[chfive/box, right=of map] (tile) {瓦片化分区};
+\node[chfive/box, right=of tile] (meta) {元数据索引};
+
+\node[chfive/core, below=18mm of tile] (dispatch) {地图调度模块};
+\node[chfive/aux, left=of dispatch] (loc) {第四章定位节点\\当前位姿估计};
+\node[chfive/aux, right=of dispatch] (service) {地图服务模块};
+\node[chfive/core, below=of dispatch] (localmap) {局部匹配地图};
+\node[chfive/aux, below=of loc] (match) {帧到局部地图配准};
+
+\draw[chfive/arr] (map) -- (tile);
+\draw[chfive/arr] (tile) -- (meta);
+\draw[chfive/arr] (tile) -- (dispatch);
+\draw[chfive/arr] (meta) -- (dispatch);
+\draw[chfive/arr] (loc) -- node[chfive/lab, above] {位姿/区域} (dispatch);
+\draw[chfive/arr] (dispatch) -- node[chfive/lab, above] {瓦片请求} (service);
+\draw[chfive/arr] (service) -- node[chfive/lab, right] {拼接生成} (localmap);
+\draw[chfive/arr] (localmap) -- (match);
+\draw[chfive/arr] (loc) -- (match);
+\draw[chfive/darr, bend right=25] (match.east) to node[chfive/lab, below] {更新位姿} (loc.south);
+
+\node[chfive/group, fit=(map)(meta), label={[chfive/lab]above:离线组织层}] {};
+\node[chfive/group, fit=(loc)(dispatch)(service)(localmap)(match), label={[chfive/lab]below:在线定位与地图调度闭环}] {};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,30 @@
+\documentclass{ctexart}
+\usepackage[paperwidth=190mm,paperheight=105mm,margin=4mm]{geometry}
+\usepackage{tikz}
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\begin{tikzpicture}[node distance=8mm and 8mm]
+\input{_styles.tex}
+
+\node[chfive/aux] (pose) {当前位置估计};
+\node[chfive/box, below=of pose] (origin) {所属网格原点计算};
+\node[chfive/box, below=of origin] (select) {邻域瓦片选择};
+\node[chfive/core, right=18mm of select] (request) {瓦片请求发布};
+\node[chfive/aux, above=of request] (service) {地图服务端加载};
+\node[chfive/core, below=of request] (stitch) {局部地图拼接生成};
+\node[chfive/aux, left=18mm of stitch] (match) {帧到地图配准};
+\node[chfive/box, below=of stitch] (pub) {局部地图发布};
+
+\draw[chfive/arr] (pose) -- (origin);
+\draw[chfive/arr] (origin) -- (select);
+\draw[chfive/arr] (select) -- (request);
+\draw[chfive/arr] (request) -- (service);
+\draw[chfive/arr] (service) -- (stitch);
+\draw[chfive/arr] (stitch) -- (pub);
+\draw[chfive/arr] (pub) -- (match);
+\draw[chfive/darr, bend right=18] (match.north) to node[chfive/lab, below] {更新位姿} (pose.south west);
+\node[chfive/group, fit=(pose)(origin)(select), label={[chfive/lab]left:调度决策}] {};
+\node[chfive/group, fit=(request)(service)(stitch)(pub), label={[chfive/lab]right:地图生成}] {};
+\end{tikzpicture}
+\end{document}

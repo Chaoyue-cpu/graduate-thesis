@@ -1,0 +1,62 @@
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric,shapes.symbols}
+
+\tikzset{
+  chfive/box/.style={
+    draw,
+    rounded corners=3pt,
+    thick,
+    align=center,
+    minimum height=8mm,
+    minimum width=24mm,
+    font=\small,
+    fill=blue!8
+  },
+  chfive/core/.style={
+    draw,
+    rounded corners=3pt,
+    thick,
+    align=center,
+    minimum height=8mm,
+    minimum width=26mm,
+    font=\small\bfseries,
+    fill=orange!15
+  },
+  chfive/aux/.style={
+    draw,
+    rounded corners=3pt,
+    thick,
+    align=center,
+    minimum height=8mm,
+    minimum width=24mm,
+    font=\small,
+    fill=green!10
+  },
+  chfive/data/.style={
+    draw,
+    rounded corners=3pt,
+    thick,
+    align=center,
+    minimum height=8mm,
+    minimum width=24mm,
+    font=\small,
+    fill=yellow!16
+  },
+  chfive/group/.style={
+    draw,
+    rounded corners=4pt,
+    thick,
+    dashed,
+    inner sep=6pt
+  },
+  chfive/arr/.style={-{Latex[length=2.6mm]}, thick},
+  chfive/darr/.style={-{Latex[length=2.6mm]}, thick, dashed},
+  chfive/lab/.style={font=\small},
+  chfive/tile/.style={draw=black!60, line width=0.5pt, fill=gray!5},
+  chfive/corridor/.style={draw=black!70, line width=1.0pt, fill=cyan!12},
+  chfive/highlight/.style={draw=red!75!black, line width=1.0pt, fill=red!12},
+  chfive/active/.style={draw=orange!80!black, line width=1.0pt, fill=orange!20},
+  chfive/traj/.style={draw=blue!70!black, line width=1.2pt, -{Latex[length=2.4mm]}},
+  chfive/boundary/.style={draw=red!70!black, dashed, line width=1pt},
+  chfive/chartA/.style={draw=blue!70!black, fill=blue!30},
+  chfive/chartB/.style={draw=orange!80!black, fill=orange!30}
+}

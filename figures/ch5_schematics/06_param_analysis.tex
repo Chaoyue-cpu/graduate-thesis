@@ -1,0 +1,39 @@
+\documentclass{ctexart}
+\usepackage[paperwidth=235mm,paperheight=78mm,margin=4mm]{geometry}
+\usepackage{tikz}
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\begin{tikzpicture}[x=0.95cm,y=0.95cm]
+\input{_styles.tex}
+
+% chart 1
+\begin{scope}[shift={(0,0)}]
+  \draw[->, thick] (0,0) -- (4.4,0) node[below] {$R$};
+  \draw[->, thick] (0,0) -- (0,3.4) node[left] {归一化指标};
+  \fill[chfive/chartA] (0.6,0) rectangle (1.1,1.0);
+  \fill[chfive/chartA] (1.7,0) rectangle (2.2,1.6);
+  \fill[chfive/chartA] (2.8,0) rectangle (3.3,2.3);
+  \node[chfive/lab] at (2.0,-0.7) {内存/计算开销随 $R$ 增大};
+  \foreach \x/\lab in {0.85/1,1.95/2,3.05/3} \node[chfive/lab, below] at (\x,0) {\lab};
+\end{scope}
+
+% chart 2
+\begin{scope}[shift={(6.3,0)}]
+  \draw[->, thick] (0,0) -- (4.4,0) node[below] {$d_{\mathrm{th}}$};
+  \draw[->, thick] (0,0) -- (0,3.4) node[left] {切换频率};
+  \draw[chfive/chartB, thick] (0.5,2.8) -- (1.4,2.0) -- (2.3,1.3) -- (3.3,0.9);
+  \foreach \p in {(0.5,2.8),(1.4,2.0),(2.3,1.3),(3.3,0.9)} {\fill[orange!80!black] \p circle (1.8pt);} 
+  \node[chfive/lab] at (2.0,-0.7) {切换频率随门控阈值降低};
+\end{scope}
+
+% chart 3
+\begin{scope}[shift={(12.5,0)}]
+  \draw[->, thick] (0,0) -- (4.4,0) node[below] {$N_h$};
+  \draw[->, thick] (0,0) -- (0,3.4) node[left] {稳定性};
+  \draw[chfive/chartA, thick] (0.5,0.8) -- (1.4,1.5) -- (2.3,2.1) -- (3.3,2.5);
+  \foreach \p in {(0.5,0.8),(1.4,1.5),(2.3,2.1),(3.3,2.5)} {\fill[blue!70!black] \p circle (1.8pt);} 
+  \node[chfive/lab] at (2.0,-0.7) {滞回确认增强切换稳定性};
+\end{scope}
+\end{tikzpicture}
+\end{document}

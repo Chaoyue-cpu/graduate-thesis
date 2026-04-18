@@ -1,0 +1,27 @@
+\documentclass{ctexart}
+\usepackage[paperwidth=185mm,paperheight=95mm,margin=4mm]{geometry}
+\usepackage{tikz}
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\begin{tikzpicture}[x=0.8cm,y=0.8cm]
+\input{_styles.tex}
+
+\foreach \x in {0,1,...,8} {\foreach \y in {0,1,...,4} {\path[chfive/tile] (\x,\y) rectangle +(1,1);}}
+\fill[chfive/corridor] (0.2,2.2) -- (2.4,2.2) -- (2.4,2.8) -- (0.2,2.8) -- cycle;
+\fill[chfive/corridor] (2.2,1.2) -- (2.8,1.2) -- (2.8,3.6) -- (2.2,3.6) -- cycle;
+\fill[chfive/corridor] (2.2,3.0) -- (6.8,3.0) -- (6.8,3.6) -- (2.2,3.6) -- cycle;
+\fill[chfive/corridor] (5.8,1.2) -- (6.4,1.2) -- (6.4,3.6) -- (5.8,3.6) -- cycle;
+\fill[chfive/corridor] (5.8,1.2) -- (8.6,1.2) -- (8.6,1.8) -- (5.8,1.8) -- cycle;
+
+\foreach \p in {(2,2),(2,3),(3,3),(4,3),(5,3),(6,3),(6,2),(6,1),(7,1)} {
+  \path[chfive/highlight] \p rectangle +(1,1);
+}
+\path[chfive/active] (5,2) rectangle +(1,1);
+\draw[chfive/traj] (0.5,2.5) -- (2.5,2.5) -- (2.5,3.3) -- (6.2,3.3) -- (6.2,1.5) -- (8.1,1.5);
+\fill[black] (5.5,2.5) circle (2pt);
+\node[chfive/lab, above] at (5.5,2.65) {当前位置};
+\node[chfive/lab] at (5.5,1.5) {当前瓦片};
+\node[chfive/lab] at (3.2,0.4) {邻域瓦片集合};
+\end{tikzpicture}
+\end{document}
